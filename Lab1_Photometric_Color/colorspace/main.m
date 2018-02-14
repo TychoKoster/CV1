@@ -5,11 +5,14 @@ clc
 close all
 
 I = imread('peppers.png');
-
-J = ConvertColorSpace(I,'opponent');
+imshow(I);
+% 
+% J = ConvertColorSpace(I,'opponent');
+% imshow(J);
  
 % close all
 % J = ConvertColorSpace(I,'rgb');
+% imshow(J);
 
 % close all
 % J = ConvertColorSpace(I,'hsv');
@@ -18,4 +21,4 @@ J = ConvertColorSpace(I,'opponent');
 % J = ConvertColorSpace(I,'ycbcr');
 
 % close all
-% J = ConvertColorSpace(I,'gray');
+J = ConvertColorSpace(I,'gray');

@@ -17,6 +17,7 @@ end
 % create arrays for 
 %   albedo (1 channel)
 %   normal (3 channels)
+
 albedo = zeros(h, w, 1);
 normal = zeros(h, w, 3);
 
@@ -31,8 +32,9 @@ normal = zeros(h, w, 3);
 %   normal at this point is g / |g|
 
 for x = 1:h
-    for y = 1:w
+    for y = 1:w            
         I = [];
+        image = image_stack(x,y,:);
         for i = 1:z
              I = [I, image_stack(x,y,i)];
         end
