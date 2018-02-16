@@ -1,0 +1,12 @@
+function [ ] = recoloring( original_image, reflectance, shading )
+    % 1. Actual material color is the rgb of the reflectance
+    % 2. Recolor with green
+    green_recolor = zeros(size(reflectance));
+    green_recolor(:, :, 2) = reflectance(:, :, 2);
+    iid_image_formation(original_image, green_recolor, shading);
+    
+    % Recolor with magenta
+    magenta_recolor = zeros(size(reflectance));
+    magenta_recolor(:,:,1)
+end
+
