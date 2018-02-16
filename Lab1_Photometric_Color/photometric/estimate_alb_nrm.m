@@ -34,7 +34,6 @@ normal = zeros(h, w, 3);
 for x = 1:h
     for y = 1:w            
         I = [];
-        image = image_stack(x,y,:);
         for i = 1:z
              I = [I, image_stack(x,y,i)];
         end
