@@ -6,7 +6,7 @@ disp('Part 1: Photometric Stereo')
 
 % obtain many images in a fixed view under different illumination
 disp('Loading images...')
-image_dir = '~/Github/CV1/Lab1_Photometric_Color/photometric/photometrics_images/MonkeyColor/';   % TODO: get the path of the script
+image_dir = '~/Documents/CV1/Lab1_Photometric_Color/photometric/photometrics_images/MonkeyColor/';   % TODO: get the path of the script
 %image_ext = '*.png';
 
 [image_stack_1, scriptV] = load_syn_images(image_dir, 1);
