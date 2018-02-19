@@ -22,11 +22,11 @@ switch path_type
         % for each pixel in the left column of height_map
         %   height_value = previous_height_value + corresponding_q_value
         for i = 2:h
-            height_map(i,1) = height_map(i,1) + q(i,1);
+            height_map(i,1) = height_map(i-1,1) + q(i,1);
         end
         for i = 1:h
             for j = 2:w
-               height_map(i,j) = height_map(i,j) + p(i,j);
+               height_map(i,j) = height_map(i,j-1) + p(i,j);
             end
         end
             
@@ -39,7 +39,14 @@ switch path_type
         % =================================================================
                
     case 'row'
-        
+        for i = 2:h
+            height_map(1, i) = height_map(1, i-1) + p(1, i);
+        end
+        for i = 1:h
+            for j = 2:w
+                height_map(j,i) = height_map(j-1,i) + q(j,i);
+            end
+        end
         % =================================================================
         % YOUR CODE GOES HERE
         
@@ -50,6 +57,9 @@ switch path_type
         
         % =================================================================
         % YOUR CODE GOES HERE
+        column = construct_surface(p, q, 'column');
+        row = construct_surface(p, q, 'row');
+        height_map = (column + row)/2;
 
         
         % =================================================================

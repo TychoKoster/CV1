@@ -6,7 +6,7 @@ disp('Part 1: Photometric Stereo')
 
 % obtain many images in a fixed view under different illumination
 disp('Loading images...')
-image_dir = '~/Documents/CV1/Lab1_Photometric_Color/photometric/photometrics_images/SphereGray5/';   % TODO: get the path of the script
+image_dir = '~/Github/CV1/Lab1_Photometric_Color/photometric/photometrics_images/SphereGray5/';   % TODO: get the path of the script
 %image_ext = '*.png';
 
 [image_stack_1, scriptV] = load_syn_images(image_dir, 1);
@@ -28,7 +28,7 @@ disp('Computing surface albedo and normal map...')
 
 %% integrability check: is (dp / dy  -  dq / dx) ^ 2 small everywhere?
 disp('Integrability checking')
-[p, q, SE] = check_integrability(normals_3);
+[p, q, SE] = check_integrability(normals);
 
 threshold = 0.005;
 SE(SE <= threshold) = NaN; % for good visualization
@@ -38,8 +38,8 @@ fprintf('Number of outliers: %d\n\n', sum(sum(SE > threshold)));
 height_map = construct_surface( p, q );
 
 %% Display
-show_results(albedo_3, normals_3, SE);
-show_model(albedo_3, height_map);
+show_results(albedo, normals, SE);
+show_model(albedo, height_map);
 
 
 %% Face
