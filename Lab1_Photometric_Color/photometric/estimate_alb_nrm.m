@@ -42,7 +42,7 @@ for x = 1:h
             rightside = scriptI * I.';
             leftside = scriptI * scriptV;
         else 
-            rightside = I;
+            rightside = I.';
             leftside = scriptV;
         end
         g = mldivide(leftside, rightside);
