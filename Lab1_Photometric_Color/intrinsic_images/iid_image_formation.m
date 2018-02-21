@@ -1,5 +1,6 @@
 function [ reconstructed_image ] = iid_image_formation( original_image, reflectance, shading, plot )
     % Expect double images for shading and reflectance
+    % Reconstruct equation used that was given in the assignment
     reconstructed_image = shading .* reflectance;
     
     if plot

@@ -29,8 +29,9 @@ q(isnan(q)) = 0;
 % approximate second derivate by neighbor difference
 % and compute the Squared Errors SE of the 2 second derivatives SE
 SE = sqrt((diff(p) - diff(q)).^2);
+[h,w] = size(SE);
 % ========================================================================
-
+SE = [SE; zeros(1, w)];
 
 end
 

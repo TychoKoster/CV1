@@ -2,15 +2,10 @@ function show_results( albedo, normals, SE )
 %SHOW_RESULTS display albedo, normal and computational errors
 
 [h, w, ~] = size(normals);
-h
-w
 % plot the results
 figure
 subplot(2, 3, 1);
-[X, Y] = meshgrid(1:w, 1:h-1);
-size(X)
-size(Y)
-size(SE)
+[X, Y] = meshgrid(1:w, 1:h);
 
 surf(X, Y, SE, gradient(SE));
 title('Integrability check: (dp / dy - dq / dx) ^2 ');
