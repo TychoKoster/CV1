@@ -36,7 +36,7 @@ fprintf('Number of outliers: %d\n\n', sum(sum(SE > threshold)));
 
 %% compute the surface height
 height_map = construct_surface( p, q, 'row');
-imshow(albedo)
+imshow(normals)
 %% Display
 show_results(albedo, normals, SE);
 show_model(albedo, height_map);
