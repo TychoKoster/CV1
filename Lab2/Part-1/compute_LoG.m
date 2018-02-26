@@ -9,12 +9,13 @@ switch LOG_type
 
     case 2
         %method 2
-        h = fspecial('log', 5, 2);
+        h = fspecial('log', 5, 0.5);
         imOut = imfilter(image, h);
     case 3
         %method 3
-        fprintf('Not implemented\n')
-
+        gauss1 = denoise(image, 'gaussian', 0.5, 5);
+        gauss2 = denoise(image, 'gaussian', 2, 5);
+        imOut = gauss1 - gauss2; 
 end
 end
 
