@@ -184,8 +184,7 @@ features = zeros(numRows, numCols, length(featureMags));
 if smoothingFlag
     % \\TODO:
     for i = 1:length(featureMags)
-        filtered_im = imgaussfilt(featureMags{i}, 2);
-        features(:, :, i) = filtered_im;
+        features(:, :, i) = imgaussfilt(featureMags{i}, gaborFilterBank(i).sigma);
     end
     %FOR_LOOP
         % i)  filter the magnitude response with appropriate Gaussian kernels
@@ -213,8 +212,8 @@ features = reshape(features, numRows * numCols, []);
 first_dim = mean(features, 1);
 sec_dim = mean(features, 2);
 
-features = (features - mean(features(:)));
-features = features/std(features(:));% \\ TODO: i)  Implement standardization on matrix called features. 
+features = (features - mean(features));
+features = features/std(features);% \\ TODO: i)  Implement standardization on matrix called features. 
            %          ii) Return the standardized data matrix.
 
 % (Optional) Visualize the saliency map using the first principal component 
