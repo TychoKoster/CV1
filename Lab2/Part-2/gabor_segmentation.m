@@ -1,7 +1,7 @@
 %% Hyperparameters
 k        = 2;      % number of clusters in k-means algorithm. By default, 
                    % we consider k to be 2 in foreground-background segmentation task.
-image_id = 'Kobi'; % Identifier to switch between input images.
+image_id = 'Polar'; % Identifier to switch between input images.
                    % Possible ids: 'Kobi',    'Polar', 'Robin-1'
                    %               'Robin-2', 'Cows'
 
@@ -10,7 +10,7 @@ err_msg  = 'Image not available.';
 
 % Control settings
 visFlag       = false;    %  Set to true to visualize filter responses.
-smoothingFlag = true;   %  Set to true to postprocess filter outputs.
+smoothingFlag = false;   %  Set to true to postprocess filter outputs.
 
 %% Read image
 switch image_id
@@ -21,16 +21,16 @@ switch image_id
         img = imread('~/Github/CV1/Lab2/Part-2/data/polar-bear-hiding.jpg');
         resize_factor = 0.75;
     case 'Robin-1'
-        img = imread('./data/robin-1.jpg');
+        img = imread('~/Github/CV1/Lab2/Part-2/data/robin-1.jpg');
         resize_factor = 1;
     case 'Robin-2'
-        img = imread('./data/robin-2.jpg');
+        img = imread('~/Github/CV1/Lab2/Part-2/data/robin-2.jpg');
         resize_factor = 0.5;
     case 'Cows'
-        img = imread('./data/cows.jpg');
+        img = imread('~/Github/CV1/Lab2/Part-2/data/cows.jpg');
         resize_factor = 0.5;
     case 'SciencePark'
-        img = imread('./data/sciencepark.jpg');
+        img = imread('~/Github/CV1/Lab2/Part-2/data/sciencepark.jpg');
         img = permute(img,[2,1,3]);
         resize_factor = 0.2;      
         
@@ -50,7 +50,7 @@ figure(1), imshow(img), title(sprintf('Input image: %s', image_id));
 % a collection of filters with varying properties (e.g. {shape, texture}).
 % A Gabor filterbank consists of Gabor filters of distinct orientations
 % and scales. We will use this bank to extract texture information from the
-% input image. 
+% input image.
 
 [numRows, numCols, ~] = size(img);
 
@@ -67,12 +67,12 @@ n = floor(log2(lambdaMax/lambdaMin));
 lambdas = 2.^(0:(n-2)) * lambdaMin;
 
 % Define the set of orientations for the Gaussian envelope.
-dTheta      = 2*pi/8;                  % \\ the step size
+dTheta      = 2*pi/12;                  % \\ the step size
 orientations = 0:dTheta:(pi/2);       
 
 % Define the set of sigmas for the Gaussian envelope. Sigma here defines 
 % the standard deviation, or the spread of the Gaussian. 
-sigmas = [1,2]; 
+sigmas = [1,1.5]; 
 
 % Now you can create the filterbank. We provide you with a MATLAB struct
 % called gaborFilterBank in which we will hold the filters and their

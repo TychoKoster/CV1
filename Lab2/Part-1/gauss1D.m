@@ -5,7 +5,10 @@ function G = gauss1D( sigma , kernel_size )
     end
     %% solution
     limit = floor(kernel_size/2);
-    dom = -limit:1:limit;    
+    % Compute domain of X
+    dom = -limit:1:limit;  
+    % Gaussian equation
     G = exp(-(dom.^2)/(2 * sigma^2))/(sigma * sqrt(2 * pi));
+    % Normalize
     G = G/sum(G);
 end
