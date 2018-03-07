@@ -1,8 +1,7 @@
 function [H, r, c] = harris_corner_detector(I, threshold, N, kernel_size, sigma)
     % Convert to grayscale
-    max_angle = 360;
-    I = imrotate(I, round(rand(1) * max_angle));
     I_gray = rgb2gray(I);
+    size(I_gray)
     
     % Gaussian derivative
     G = fspecial('gaussian', [kernel_size kernel_size], sigma);
@@ -45,12 +44,4 @@ function [H, r, c] = harris_corner_detector(I, threshold, N, kernel_size, sigma)
         end
     end
 
-    % Show results
-    ax = gca();
-    [s1,s2] = size(I);
-    scatter(ax, c, r, 'filled');
-    hold(ax, 'on');
-    imh = imshow(I);
-    hold(ax, 'off')
-    uistack(imh, 'bottom')
 end

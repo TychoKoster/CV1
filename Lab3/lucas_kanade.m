@@ -1,45 +1,56 @@
-function [ ] = lucas_kanade(im1, im2, window_size, kernel_size, sigma)
-    im1 = rgb2gray(im1);
-    im2 = rgb2gray(im2);
+function [Vx, Vy, X, Y] = lucas_kanade(im1, im2, window_size, kernel_size, sigma)
+    im1 = im2double(im1);
+    im2 = im2double(im2);
+    
+    if size(im1, 3) == 3
+        im1 = rgb2gray(im1);
+    end
+    
+    if size(im2, 3) == 3
+        im2 = rgb2gray(im2);
+    end
+    
     
     V = [];
-    x = [];
-    y = [];
+    X = [];
+    Y = [];
     
     % How many windows possible
-    parts = mod(size(im1, 1), window_size);
+    parts = floor(size(im1, 1)/window_size);
     
-     % Gaussian derivative
+    % Gaussian derivative
     G = fspecial('gaussian', [kernel_size kernel_size], sigma);
     [Gx,Gy] = gradient(G);
-
+    
+    % Compute gradients
+    Ix = imfilter(im1, Gx, 'conv');
+    Iy = imfilter(im1, Gy, 'conv');
+    It = im2 - im1;
+    
     % Loop over regions of window_size x window_size
     for i = 1:window_size:parts*window_size
-        for j = 1:window_size:parts*window_size
-            submatrix_im1 = double(im1(i:i+window_size-1, j:j+window_size-1));
-            submatrix_im2 = double(im2(i:i+window_size-1, j:j+window_size-1));
+        for j = 1:window_size:parts*window_size            
+            % Compute A
+            Ix_part = Ix(i:i+window_size-1, j:j+window_size-1);
+            Iy_part = Iy(i:i+window_size-1, j:j+window_size-1);
+            A = [Ix_part(:), Iy_part(:)];
             
-            % Image derivatives by convolving with gaussian derivative
-            Ix = imfilter(submatrix_im1, Gx, 'conv');
-            Iy = imfilter(submatrix_im1, Gy, 'conv');
-            A = [Ix(:), Iy(:)];
+            % Compute b
+            It_part = It(i:i+window_size-1, j:j+window_size-1);
+            b = -It_part(:);
             
-            % -It
-            b = -(submatrix_im2(:) - submatrix_im1(:));
+            % Optical flow
             v = inv(transpose(A)*A) * transpose(A)*b;
             
-            % Store results
+            % Store result and optical flow position
             V = [V, v];
-            x = [x, i+round(window_size/2)];
-            y = [y, j+round(window_size/2)];
+            X = [X, j+round(window_size/2)];
+            Y = [Y, i+round(window_size/2)];
         end
     end
-    % Plot optical flow
+    
+    % Return optical flow
     Vx = V(1, :);
     Vy = V(2, :);
-    
-    imshow(im1);
-    hold on;
-    quiver(x, y, Vx, Vy);
 end
 
