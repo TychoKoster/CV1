@@ -2,24 +2,23 @@ function [ ] = tracking(images, threshold, window_harris, kernel_size, sigma, wi
     % Harris corner detection on first image
     first_image = images{1};
     [~, r, c] = harris_corner_detector(first_image, threshold, window_harris, kernel_size, sigma);
-    filename = 'person_toy.gif';
-    % Show results
-%     ax = gca();
-%     scatter(ax, c, r, 'filled');
-%     hold(ax, 'on');
-%     imh = imshow(images{1});
-%     hold(ax, 'off')
-%     uistack(imh, 'bottom')
-    
+    filename = 'pingpong.gif';
+    [row_size, col_size] = size(first_image);
     for i = 1:length(images)-1
-        [Vx, Vy, ~, ~] = lucas_kanade(images{i}, images{i+1}, window_lucas, kernel_size, sigma); 
+        [Vx, Vy, ~, ~] = lucas_kanade(images{i}, images{i+1}, window_lucas, kernel_size, 2); 
+        % If r and c have values below 1 and the sizes, return back to
+        % sizes
+        r(r < 1) = 1;
+        r(r > row_size) = row_size;
+        c(c < 1) = 1;
+        c(c > col_size) = col_size;
+        % Calculate the indices of the windows of the corner points
         window_indices_r = ceil(r / window_lucas);
         window_indices_c = ceil(c / window_lucas);
-        
-        figure('visible', 'off');
+        figure('Visible', 'off');
         imshow(images{i});
         hold on;
-        quiver(c, r, Vx(window_indices_r), Vy(window_indices_c), 'color', 'red');
+        quiver(c, r, Vx(window_indices_c), Vy(window_indices_r), 'color', 'red');
         F = getframe;
         % Capture the plot as an image 
         im = frame2im(F); 
@@ -30,18 +29,9 @@ function [ ] = tracking(images, threshold, window_harris, kernel_size, sigma, wi
         else 
             imwrite(imind,cm,filename,'gif','WriteMode','append', 'DelayTime',0.1); 
         end 
-        
-%         if i == 70
-%             figure;
-%             imshow(images{i});
-%             hold on;
-%             quiver(c, r, Vx(window_indices_c), Vy(window_indices_r), 'color', 'red');
-%             break
-%         end
-        
-        r = r + 6*Vy(window_indices_r);
-        c = c + 6*Vx(window_indices_c);
-            
+        % Update corner points with scaling flow
+        r = r + 2*Vy(window_indices_r);
+        c = c + 2*Vx(window_indices_c);
     end
  
 end

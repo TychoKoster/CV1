@@ -1,5 +1,5 @@
 %% Read in images
-image_files = dir('person_toy/*.jpg');
+image_files = dir('pingpong/*.jpeg');
 images = cell(length(image_files), 1);
     
 % Read in images

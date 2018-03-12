@@ -1,4 +1,4 @@
-function [H, r, c] = harris_corner_detector(I, threshold, N, kernel_size, sigma)
+function [H, r, c, Ix, Iy] = harris_corner_detector(I, threshold, N, kernel_size, sigma)
     % Convert to grayscale
     I_gray = rgb2gray(I);
     size(I_gray)
@@ -43,5 +43,5 @@ function [H, r, c] = harris_corner_detector(I, threshold, N, kernel_size, sigma)
             end
         end
     end
-
+    
 end
