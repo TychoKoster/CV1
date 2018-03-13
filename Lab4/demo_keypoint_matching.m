@@ -1,8 +1,7 @@
-img1 = imread('boat1.pgm');
-img2 = imread('boat2.pgm');
+img1 = im2double(imread('boat1.pgm'));
+img2 = im2double(imread('boat2.pgm'));
 [matches, f1, f2] = keypoint_matching(img1, img2);
 random_subset = datasample(matches, 50, 2);
-matches(1)
 figure(2) ; clf ;
 imshow(cat(2, img1, img2)) ;
 % https://github.com/vlfeat/vlfeat/blob/master/toolbox/demo/vl_demo_sift_match.m
@@ -19,4 +18,46 @@ vl_plotframe(f1(:,random_subset(1,:))) ;
 f2(1,:) = f2(1,:) + size(img1,2) ;
 vl_plotframe(f2(:,random_subset(2,:))) ;
 axis image off ;
+
+%% Compute transformation matrix
+[trans_matrix, trans_m, trans_t] = RANSAC(matches, 150, 3000, f1, f2, img1, img2);
+
+%% Own way
+[h, w] = size(img1);
+transformed_im1 = zeros(h, w);
+transformed_im2 = zeros(h, w);
+for i = 1:h
+    for j = 1:w
+        xy_12 = round(transpose(trans_m) * [i; j] + trans_t);
+        xy_21 = round(trans_m * [i; j] + trans_t);
+        xy_21((xy_21 < 1)) = 1;
+        xy_12((xy_12 < 1)) = 1;
+        
+        transformed_im1(xy_12(1), xy_12(2)) = img1(i, j);
+        transformed_im2(xy_21(1), xy_21(2)) = img2(i, j);
+    end
+end
+% Show transformation from 1 to 2
+% Shenanigans
+% figure;
+% imshow(img2)
+% figure;
+% imshow(transformed_im1(1500:end, :))
+% Show transformation from 2 to 1
+% figure;
+% imshow(img1);
+% figure;
+% imshow(transformed_im2(1710:end, :));
+
+%% Matlab way
+tform_12 = maketform('affine', [transpose(trans_m); trans_t']);
+tform_21 = maketform('affine', [trans_m; trans_t']);
+transformed_im1 = imtransform(img1, tform_12);
+transformed_im2 = imtransform(img2, tform_21);
+figure;
+% imshow(img1)
+imshow(img2)
+figure;
+imshow(transformed_im1)
+% imshow(transformed_im2)
 

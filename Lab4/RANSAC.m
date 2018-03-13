@@ -1,4 +1,4 @@
-function [transformation_matrix] = RANSAC(matches, P, N, f1, f2, img1, img2)
+function [transformation_matrix, trans_m, trans_t] = RANSAC(matches, P, N, f1, f2, img1, img2)
 % Coördinates of the all the matching keypoints
 xm1 = f1(1, matches(1,:));
 ym1 = f1(2, matches(1,:));
@@ -41,13 +41,4 @@ for i = 1:N
 end
 % Own way
 
-% Matlab way
-tform = maketform('affine', [trans_m; trans_t']);
-
-% tform = maketform('affine', [transformation_matrix(1), transformation_matrix(2); transformation_matrix(3), transformation_matrix(4); transformation_matrix(5), transformation_matrix(6)]);
-new_image = imtransform(img2, tform);
-figure;
-imshow(new_image)
-figure;
-imshow(img1)
 end
