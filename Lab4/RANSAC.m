@@ -41,6 +41,4 @@ for i = 1:N
         trans_t = t;
     end
 end
-
-
 end
