@@ -2,7 +2,7 @@ function [transformation_matrix, trans_m, trans_t] = RANSAC(matches, P, N, f1, f
 % Coördinates of the all the matching keypoints
 xm1 = f1(1, matches(1,:));
 ym1 = f1(2, matches(1,:));
-xm2 = f2(1, matches(2,:)) + size(img1, 2);
+xm2 = f2(1, matches(2,:));
 ym2 = f2(2, matches(2,:));
 T_im1 = [xm1;ym1];
 T_im2 = [xm2;ym2];
@@ -11,10 +11,11 @@ for i = 1:N
     random_subset = datasample(matches, P, 2);
     % Get coördinates of the matching key points of the random subset
     xa = f1(1,random_subset(1,:));
-    xb = f2(1,random_subset(2,:)) + size(img1, 2);
+    xb = f2(1,random_subset(2,:));
     ya = f1(2,random_subset(1,:));
     yb = f2(2,random_subset(2,:));
     A = [];
+    b = [];
     % Create A matrix
     for j = 1:size(xa,2)
         A_1 = [xa(j), ya(j), 0, 0, 1, 0; 0, 0, xa(j), ya(j), 0, 1];
@@ -33,12 +34,13 @@ for i = 1:N
     count_inliers = sum(inliers(1,:) == 1 & inliers(2,:) == 1);
     % Replace transformation matrix with the highest inliers
     if max_inliers < count_inliers
+        inliers_indices = find(inliers(1,:) == 1 & inliers(2,:) == 1);
         max_inliers = count_inliers;
         transformation_matrix = x;
         trans_m = M;
         trans_t = t;
     end
 end
-% Own way
+
 
 end

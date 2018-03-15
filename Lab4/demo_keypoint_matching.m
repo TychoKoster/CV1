@@ -20,7 +20,7 @@ vl_plotframe(f2(:,random_subset(2,:))) ;
 axis image off ;
 
 %% Compute transformation matrix
-[trans_matrix, trans_m, trans_t] = RANSAC(matches, 150, 3000, f1, f2, img1, img2);
+[trans_matrix, trans_m, trans_t] = RANSAC(matches, 10, 3000, f1, f2, img1, img2);
 
 %% Own way
 [h, w] = size(img1);
@@ -39,15 +39,19 @@ for i = 1:h
 end
 % Show transformation from 1 to 2
 % Shenanigans
-% figure;
-% imshow(img2)
-% figure;
-% imshow(transformed_im1(1500:end, :))
+figure;
+subplot(2,1,1)
+imshow(img2)
+subplot(2,2,1)
+imshow(transformed_im1(1500:end))
 % Show transformation from 2 to 1
-% figure;
-% imshow(img1);
-% figure;
-% imshow(transformed_im2(1710:end, :));
+figure;
+subplot(2,2,2);
+imshow(img1);
+title('Normal image 1')
+subplot(2,2,2)
+imshow(transformed_im2(1710:end));
+title('Image 2 transformed to image 1')
 
 %% Matlab way
 tform_12 = maketform('affine', [transpose(trans_m); trans_t']);
