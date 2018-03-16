@@ -13,13 +13,13 @@ stitched_im = zeros(transformed_h, transformed_w);
 % Stitch both images by "pasting" the left image over the right to delete
 % black background of the transformed right image.
 
-% Transformed right image
+% Transformed right image paste
 for i = 1:size(transformed_im2, 1)
     for j = 1:size(transformed_im2, 2)
         stitched_im(i+abs(round(trans_t(2)/3)),j+abs(round(trans_t(1)))) = transformed_im2(i,j);
     end
 end
-% Left image
+% Left image paste
 for i = 1:size(img1, 1)
     for j = 1:size(img1, 2)
         stitched_im(i,j) = img1(i,j);

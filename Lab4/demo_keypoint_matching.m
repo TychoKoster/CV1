@@ -42,8 +42,8 @@ for i = 1:h
         transformed_im2(xy_21(1), xy_21(2)) = img2(i, j);
     end
 end
-% Crop images
 
+% Crop images
 transformed_im2(~any(transformed_im2, 2), :) = [];
 transformed_im2(:, ~any(transformed_im2, 1)) = [];
 transformed_im1(~any(transformed_im1, 2), :) = [];
