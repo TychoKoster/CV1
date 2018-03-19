@@ -65,7 +65,8 @@ for i = 1:size(transformed_im2, 1)
     end
 end
 
-
+figure;
+imshow(transformed_im2)
 % Show transformation from image 1 to 2
 figure;
 subplot(2,2,1);

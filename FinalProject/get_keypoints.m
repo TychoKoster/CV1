@@ -5,11 +5,10 @@ descriptors = [];
 if method == 'vl_sift'
     for i = 1:length(image_files)
         if size(image_files{i},3) == 3
-            [f,d] = vl_sift(single(rgb2gray(image_files{i})));
+            [~,d] = vl_sift(single(rgb2gray(image_files{i})));
         else
-            [f,d] = vl_sift(single(image_files{i}));
+            [~,d] = vl_sift(single(image_files{i}));
         end
-        features{i} = f;
         descriptors = [descriptors, double(d)];
     end
     
@@ -20,8 +19,7 @@ elseif method == 'vl_dsift'
         else
             [f,d] = vl_dsift(single(image_files{i}));
         end
-        features{i} = f;
-        descriptors{i} = d;
+        descriptors = [descriptors, double(d)];
     end
     
 elseif method == 'RGBSIFT'
@@ -32,12 +30,11 @@ elseif method == 'RGBSIFT'
                 d1 = calculate_descriptors(image_files{i}, f, 1);
                 d2 = calculate_descriptors(image_files{i}, f, 2);
                 d3 = calculate_descriptors(image_files{i}, f, 3);
-                descriptors{i} = cat(1, d1, d2, d3);
+                d = cat(1, d1, d2, d3);
             else
-                [f,d] = vl_phow(single(image_files{i}), 'Color','rgb');
-                descriptors{i} = d;
+                [~,d] = vl_phow(single(image_files{i}), 'Color','rgb');
             end
-            features{i} = f;
+            descriptors = [descriptors, double(d)];
         end
     end
     
@@ -50,12 +47,11 @@ elseif method == 'rgb-SIFT'
                 d1 = calculate_descriptors(image, f, 1);
                 d2 = calculate_descriptors(image, f, 2);
                 d3 = calculate_descriptors(image, f, 3);
-                descriptors{i} = cat(1, d1, d2, d3);
+                d = cat(1, d1, d2, d3);
             else
-                [f,d] = vl_phow(single(image_files{i}), 'Color','opponent');
-                descriptors{i} = d;
+                [~,d] = vl_phow(single(image_files{i}), 'Color','opponent');
             end
-            features{i} = f;
+            descriptors = [descriptors, double(d)];
        end
     end
     
@@ -68,12 +64,11 @@ elseif method == 'opponentSIFT'
                 d1 = calculate_descriptors(image, f, 1);
                 d2 = calculate_descriptors(image, f, 2);
                 d3 = calculate_descriptors(image, f, 3);
-                descriptors{i} = cat(1, d1, d2, d3);
+                d = cat(1, d1, d2, d3);
             else
-                [f,d] = vl_phow(single(image_files{i}), 'Color','opponent');
-                descriptors{i} = d;
+                [~,d] = vl_phow(single(image_files{i}), 'Color','opponent');
             end
-            features{i} = f;
+            descriptors = [descriptors, double(d)];
         end
     end
 end
