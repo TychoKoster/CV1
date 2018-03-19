@@ -1,5 +1,4 @@
-function [features, descriptors] = get_keypoints(image_files, method, sift_method)
-features = cell(length(image_files), 1);
+function [descriptors] = get_keypoints(image_files, method, sift_method)
 % descriptors = cell(length(image_files), 1);
 descriptors = [];
 if method == 'vl_sift'
