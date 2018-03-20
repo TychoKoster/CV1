@@ -1,6 +1,6 @@
-function [descriptors] = get_keypoints(image_files, method, sift_method)
-% descriptors = cell(length(image_files), 1);
+function [descriptors, descriptor_cell] = get_keypoints(image_files, method, sift_method)
 descriptors = [];
+descriptor_cell = cell(length(image_files), 1);
 if method == 'vl_sift'
     for i = 1:length(image_files)
         if size(image_files{i},3) == 3
@@ -9,6 +9,7 @@ if method == 'vl_sift'
             [~,d] = vl_sift(single(image_files{i}));
         end
         descriptors = [descriptors, double(d)];
+        descriptor_cell{i} = double(d);
     end
     
 elseif method == 'vl_dsift'
