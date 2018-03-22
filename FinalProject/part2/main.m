@@ -1,6 +1,5 @@
 %% main function 
 
-
 %% fine-tune cnn
 
 [net, info, expdir] = finetune_cnn();

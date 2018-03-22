@@ -1,8 +1,7 @@
 function [net, info, expdir] = finetune_cnn(varargin)
 
 %% Define options
-run(fullfile(fileparts(mfilename('fullpath')), ...
-  '..', '..', '..', 'matlab', 'vl_setupnn.m')) ;
+run(fullfile(fileparts(mfilename('fullpath')), 'matconvnet-1.0-beta25', 'matlab', 'vl_setupnn.m')) ;
 
 opts.modelType = 'lenet' ;
 [opts, varargin] = vl_argparse(opts, varargin) ;
@@ -20,7 +19,7 @@ opts.train = struct() ;
 opts = vl_argparse(opts, varargin) ;
 if ~isfield(opts.train, 'gpus'), opts.train.gpus = []; end;
 
-opts.train.gpus = [1];
+opts.train.gpus = [];
 
 
 
@@ -87,12 +86,38 @@ splits = {'train', 'test'};
 
 %%
 % subtract mean
-dataMean = mean(data(:, :, :, sets == 1), 4);
-data = bsxfun(@minus, data, dataMean);
-
-imdb.images.data = data ;
-imdb.images.labels = single(labels) ;
-imdb.images.set = sets;
+path_to_airplane = '../Caltech4/ImageData/airplanes_train/*.jpg';
+path_to_cars = '../Caltech4/ImageData/cars_train/*.jpg';
+path_to_faces = '../Caltech4/ImageData/faces_train/*.jpg';
+path_to_motorbikes = '../Caltech4/ImageData/motorbikes_train/*.jpg';
+path_to_airplane_test = '../Caltech4/ImageData/airplanes_test/*.jpg';
+path_to_cars_test = '../Caltech4/ImageData/cars_test/*.jpg';
+path_to_faces_test = '../Caltech4/ImageData/faces_test/*.jpg';
+path_to_motorbikes_test = '../Caltech4/ImageData/motorbikes_test/*.jpg';
+train_airplane_images = retrieve_images(path_to_airplane);
+train_cars_images = retrieve_images(path_to_cars);
+train_faces_images = retrieve_images(path_to_faces);
+train_motorbikes_images = retrieve_images(path_to_motorbikes);
+test_airplane_images = retrieve_images(path_to_airplane_test);
+test_cars_images = retrieve_images(path_to_cars_test);
+test_faces_images = retrieve_images(path_to_faces_test);
+test_motorbikes_images = retrieve_images(path_to_motorbikes_test);
+imdb = struct;
+imdb.images.data = [];
+imdb.images.labels = [];
+imdb.images.set = [];
+imdb = addData(imdb, 1, train_airplane_images, 1);
+imdb = addData(imdb, 2, train_cars_images, 1);
+imdb = addData(imdb, 3, train_faces_images, 1);
+imdb = addData(imdb, 4, train_motorbikes_images, 1);
+imdb = addData(imdb, 1, test_airplane_images, 2);
+imdb = addData(imdb, 2, test_cars_images, 2);
+imdb = addData(imdb, 3, test_faces_images, 2);
+imdb = addData(imdb, 4, test_motorbikes_images, 2);
+imdb.images.data = single(imdb.images.data);
+dataMean = mean(imdb.images.data(:, :, :, imdb.images.set == 1), 4);
+imdb.images.data = bsxfun(@minus, imdb.images.data, dataMean);
+imdb.images.labels = single(imdb.images.labels);
 imdb.meta.sets = {'train', 'val'} ;
 imdb.meta.classes = classes;
 
