@@ -7,7 +7,6 @@ nets.fine_tuned.layers{end}.type = 'softmax';
 %% extract features and train SVM classifiers, by validating their hyperparameters
 [svm.pre_trained.trainset, svm.pre_trained.testset] = get_svm_data(data, nets.pre_trained);
 [svm.fine_tuned.trainset,  svm.fine_tuned.testset] = get_svm_data(data, nets.fine_tuned);
-
 %% measure the accuracy of different settings
 [nn.accuracy] = get_nn_accuracy(nets.fine_tuned, data);
 [svm.pre_trained.predictions, svm.pre_trained.accuracy] = get_predictions(svm.pre_trained);
