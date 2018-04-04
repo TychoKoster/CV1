@@ -20,7 +20,7 @@ opts.contrastNormalization = true ;
 opts.networkType = 'simplenn' ;
 opts.train = struct() ;
 opts = vl_argparse(opts, varargin) ;
-if ~isfield(opts.train, 'gpus'), opts.train.gpus = []; end
+if ~isfield(opts.train, 'gpus'), opts.train.gpus = []; end;
 
 % -------------------------------------------------------------------------
 %                                                    Prepare model and data

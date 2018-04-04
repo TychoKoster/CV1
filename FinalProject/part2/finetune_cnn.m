@@ -30,9 +30,9 @@ net = update_model();
 %% TODO: Implement getCaltechIMDB function below
 
 if exist(opts.imdbPath, 'file')
-  imdb = load(opts.imdbPath) ;
+  imdb = load(opts.imdbPath);
 else
-  imdb = getCaltechIMDB() ;
+  imdb = getCaltechIMDB();
   mkdir(opts.expDir) ;
   save(opts.imdbPath, '-struct', 'imdb') ;
 end
@@ -49,7 +49,7 @@ trainfn = @cnn_train ;
   'expDir', opts.expDir, ...
   net.meta.trainOpts, ...
   opts.train, ...
-  'val', find(imdb.images.set == 2)) ;
+  'val', find(imdb.images.set == 2));
 
 expdir = opts.expDir;
 end
@@ -77,7 +77,7 @@ end
 % -------------------------------------------------------------------------
 function imdb = getCaltechIMDB()
 % -------------------------------------------------------------------------
-% Preapre the imdb structure, returns image data with mean image subtracted
+% Prepare the imdb structure, returns image data with mean image subtracted
 classes = {'airplanes', 'cars', 'faces', 'motorbikes'};
 splits = {'train', 'test'};
 
