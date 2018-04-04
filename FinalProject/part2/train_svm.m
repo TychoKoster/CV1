@@ -7,7 +7,6 @@ nets.fine_tuned.layers{end}.type = 'softmax';
 %% extract features and train SVM classifiers, by validating their hyperparameters
 [svm.pre_trained.trainset, svm.pre_trained.testset] = get_svm_data(data, nets.pre_trained);
 [svm.fine_tuned.trainset,  svm.fine_tuned.testset] = get_svm_data(data, nets.fine_tuned);
-
 %% measure the accuracy of different settings
 [nn.accuracy] = get_nn_accuracy(nets.fine_tuned, data);
 [svm.pre_trained.predictions, svm.pre_trained.accuracy] = get_predictions(svm.pre_trained);
@@ -76,9 +75,13 @@ for i = 1:size(data.images.data, 4)
     
 end
 
+% Show feature visualization.
+Y = tsne(trainset.features');
+figure;
+gscatter(Y(:,1), Y(:,2), trainset.labels);
+
 trainset.labels = double(trainset.labels);
 trainset.features = sparse(double(trainset.features'));
-
 testset.labels = double(testset.labels);
 testset.features = sparse(double(testset.features'));
 
