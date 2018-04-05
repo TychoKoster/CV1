@@ -108,7 +108,12 @@ sorted_images_faces = images_faces(sort_order_faces);
 images_motorbikes = [test_motorbikes_paths, test_airplane_paths, test_faces_paths, test_cars_paths];
 sorted_images_motorbikes = images_motorbikes(sort_order_motorbikes);
 
-html_airplane = generate_html_string(sorted_images_airplane)
-html_cars = generate_html_string(sorted_images_cars)
-html_faces = generate_html_string(sorted_images_faces)
-html_motorbikes = generate_html_string(sorted_images_motorbikes)
+html_airplane = generate_html_string(sorted_images_airplane);
+html_cars = generate_html_string(sorted_images_cars);
+html_faces = generate_html_string(sorted_images_faces);
+html_motorbikes = generate_html_string(sorted_images_motorbikes);
+
+fprintf(fopen('html_airplane.txt', 'w'), html_airplane);
+fprintf(fopen('html_cars.txt', 'w'), html_cars);
+fprintf(fopen('html_faces.txt', 'w'), html_faces);
+fprintf(fopen('html_motorbikes.txt', 'w'), html_motorbikes);

@@ -63,9 +63,9 @@ path_to_motorbikes_test = 'Caltech4/ImageData/motorbikes_test/*.jpg';
 amount_test_images = 50;
 
 [test_airplane_images, test_airplane_paths] = retrieve_images(path_to_airplane_test, amount_test_images);
-[test_cars_images, ] = retrieve_images(path_to_cars_test, amount_test_images);
-[test_faces_images, ] = retrieve_images(path_to_faces_test, amount_test_images);
-[test_motorbikes_images, ] = retrieve_images(path_to_motorbikes_test, amount_test_images);
+[test_cars_images, test_cars_paths] = retrieve_images(path_to_cars_test, amount_test_images);
+[test_faces_images, test_faces_paths] = retrieve_images(path_to_faces_test, amount_test_images);
+[test_motorbikes_images, test_motorbikes_paths] = retrieve_images(path_to_motorbikes_test, amount_test_images);
 
 [~, descriptors_airplane_test] = get_keypoints(test_airplane_images, method, sift_method);
 [~, descriptors_cars_test] = get_keypoints(test_cars_images, method, sift_method);
@@ -91,20 +91,29 @@ models = {SVMModel_airplane, SVMModel_cars, SVMModel_faces, SVMModel_motorbikes}
 [labels_ranking_motorbikes, sort_order_motorbikes] = predict_SVM(models{4}, data_motorbikes_test, class_labels_motorbikes_test);
 
 %%
-AP_airplane = calculate_AP(labels_ranking_airplane);
-AP_cars = calculate_AP(labels_ranking_cars);
-AP_faces = calculate_AP(labels_ranking_faces);
-AP_motorbikes = calculate_AP(labels_ranking_motorbikes);
+AP_airplane = calculate_AP(labels_ranking_airplane)
+AP_cars = calculate_AP(labels_ranking_cars)
+AP_faces = calculate_AP(labels_ranking_faces)
+AP_motorbikes = calculate_AP(labels_ranking_motorbikes)
 
 MAP = (AP_airplane + AP_cars + AP_faces + AP_motorbikes) / 4
 
 %% Images sorted
-images_airplane = [test_airplane_images; test_cars_images; test_faces_images; test_motorbikes_images];
-sorted_images_airplane = images_airplane(sort_order_airplane, :);
-images_cars = [test_cars_images; test_airplane_images; test_faces_images; test_motorbikes_images];
-sorted_images_airplane = images_cars(sort_order_cars, :);
-images_faces = [test_faces_images; test_airplane_images; test_cars_images; test_motorbikes_images];
-sorted_images_airplane = images_faces(sort_order_faces, :);
-images_motorbikes = [test_motorbikes_images; test_airplane_images; test_faces_images; test_cars_images];
-sorted_images_airplane = images_motorbikes(sort_order_motorbikes, :);
+images_airplane = [test_airplane_paths, test_cars_paths, test_faces_paths, test_motorbikes_paths];
+sorted_images_airplane = images_airplane(sort_order_airplane);
+images_cars = [test_cars_paths, test_airplane_paths, test_faces_paths, test_motorbikes_paths];
+sorted_images_cars = images_cars(sort_order_cars);
+images_faces = [test_faces_paths, test_airplane_paths, test_cars_paths, test_motorbikes_paths];
+sorted_images_faces = images_faces(sort_order_faces);
+images_motorbikes = [test_motorbikes_paths, test_airplane_paths, test_faces_paths, test_cars_paths];
+sorted_images_motorbikes = images_motorbikes(sort_order_motorbikes);
 
+html_airplane = generate_html_string(sorted_images_airplane)
+html_cars = generate_html_string(sorted_images_cars)
+html_faces = generate_html_string(sorted_images_faces)
+html_motorbikes = generate_html_string(sorted_images_motorbikes)
+
+fprintf(fopen('html_airplane.txt', 'w'), html_airplane)
+fprintf(fopen('html_airplane.txt', 'w'), html_air)
+fprintf(fopen('html_airplane.txt', 'w'), html_airplane)
+fprintf(fopen('html_airplane.txt', 'w'), html_airplane)
