@@ -99,12 +99,12 @@ AP_motorbikes = calculate_AP(labels_ranking_motorbikes);
 MAP = (AP_airplane + AP_cars + AP_faces + AP_motorbikes) / 4
 
 %% Images sorted
-images_airplane = [test_airplane_images; test_cars_images; test_faces_images; test_motorbikes_images];
+images_airplane = test_airplane_images
 sorted_images_airplane = images_airplane(sort_order_airplane, :);
-images_cars = [test_cars_images; test_airplane_images; test_faces_images; test_motorbikes_images];
+images_cars = test_cars_images;
 sorted_images_airplane = images_cars(sort_order_cars, :);
-images_faces = [test_faces_images; test_airplane_images; test_cars_images; test_motorbikes_images];
+images_faces = test_faces_images;
 sorted_images_airplane = images_faces(sort_order_faces, :);
-images_motorbikes = [test_motorbikes_images; test_airplane_images; test_faces_images; test_cars_images];
+images_motorbikes = test_motorbikes_images;
 sorted_images_airplane = images_motorbikes(sort_order_motorbikes, :);
 
