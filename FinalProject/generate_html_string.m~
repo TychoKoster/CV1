@@ -1,0 +1,8 @@
+function [ html_string ] = generate_html_string(paths)
+    lhs = "<tr><td><img src="
+    rhs = "/>"
+    for path=paths
+        htmllhs + path{1} + rhs
+    end
+end
+

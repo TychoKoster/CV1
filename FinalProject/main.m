@@ -108,3 +108,7 @@ sorted_images_faces = images_faces(sort_order_faces);
 images_motorbikes = [test_motorbikes_paths, test_airplane_paths, test_faces_paths, test_cars_paths];
 sorted_images_motorbikes = images_motorbikes(sort_order_motorbikes);
 
+html_airplane = generate_html_string(sorted_images_airplane)
+html_cars = generate_html_string(sorted_images_cars)
+html_faces = generate_html_string(sorted_images_faces)
+html_motorbikes = generate_html_string(sorted_images_motorbikes)
