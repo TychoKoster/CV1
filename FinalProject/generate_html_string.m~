@@ -1,8 +1,16 @@
-function [ html_string ] = generate_html_string(paths)
-    lhs = "<tr><td><img src="
-    rhs = "/>"
-    for path=paths
-        htmllhs + path{1} + rhs
+function [ html_string ] = generate_html_string(paths1, paths2, paths3, paths4)
+    lhs = '<td><img src="';
+    rhs = '"/></td>';
+    for path=paths1
+        "HELLO"
+        html_string = "<tr>";
+        html_string = html_string + lhs + paths1{1} + rhs;
+        html_string = html_string + lhs + paths2{1} + rhs;
+        html_string = html_string + lhs + paths3{1} + rhs;
+        html_string = html_string + lhs + paths4{1} + rhs;
+        html_string = html_string + "</tr>";
     end
 end
+
+
 

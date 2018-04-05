@@ -1,9 +1,17 @@
-function [ html_string ] = generate_html_string(paths)
-    html_string = "";
-    lhs = "<tr><td><img src=";
-    rhs = "/>";
-    for path=paths
-        html_string = html_string + lhs + path{1} + rhs;
+function [ total_html ] = generate_html_string(paths1, paths2, paths3, paths4)
+    total_html = ""
+    lhs = '<td><img src="';
+    rhs = '"/></td>';
+    for i=1:size(paths1, 2)
+        html_string = "<tr>";
+        html_string = html_string + lhs + paths1{:, i} + rhs;
+        html_string = html_string + lhs + paths2{:, i} + rhs;
+        html_string = html_string + lhs + paths3{:, i} + rhs;
+        html_string = html_string + lhs + paths4{:, i} + rhs;
+        html_string = html_string + "</tr> \n";
+        total_html = total_html + html_string;
     end
 end
+
+
 
