@@ -33,7 +33,7 @@ cars_labels = assign_labels(kmeans_clusters, descriptor_cell_cars);
 faces_labels = assign_labels(kmeans_clusters, descriptor_cell_faces);
 motorbike_labels = assign_labels(kmeans_clusters, descriptor_cell_motorbikes);
 
-%% Loempie-Loempie Poempie-Poempi Histogrampie
+%% Histograms
 figure;
 histogram(airplane_labels{1}, nr_clusters, 'Normalization', 'probability')
 figure;
@@ -49,42 +49,52 @@ histogram(motorbike_labels{1}, nr_clusters, 'Normalization', 'probability')
 [data_motorbikes, class_labels_motorbikes] = construct_data(motorbike_labels, [airplane_labels; faces_labels; cars_labels], nr_clusters);
 
 %% Classify
-SVMModel_airplane = train(class_labels_airplane, sparse(data_airplane), '-s 1', '-wi [1 2]');
-SVMModel_cars = train(class_labels_cars, sparse(data_cars), '-s 1', '-wi [1 2]');
-SVMModel_faces = train(class_labels_faces, sparse(data_faces), '-s 1', '-wi [1 2]');  
-SVMModel_motorbikes = train(class_labels_motorbikes, sparse(data_motorbikes), '-s 1', '-wi [1 2]');
+SVMModel_airplane = train(class_labels_airplane, sparse(data_airplane), '-s 1');
+SVMModel_cars = train(class_labels_cars, sparse(data_cars), '-s 1');
+SVMModel_faces = train(class_labels_faces, sparse(data_faces), '-s 1');  
+SVMModel_motorbikes = train(class_labels_motorbikes, sparse(data_motorbikes), '-s 1');
 
-%% Test
+%% Test images
 path_to_airplane_test = 'Caltech4/ImageData/airplanes_test/*.jpg';
 path_to_cars_test = 'Caltech4/ImageData/cars_test/*.jpg';
 path_to_faces_test = 'Caltech4/ImageData/faces_test/*.jpg';
 path_to_motorbikes_test = 'Caltech4/ImageData/motorbikes_test/*.jpg';
+
 amount_test_images = 50;
+
+test_airplane_images = retrieve_images(path_to_airplane_test, amount_test_images);
+test_cars_images = retrieve_images(path_to_cars_test, amount_test_images);
+test_faces_images = retrieve_images(path_to_faces_test, amount_test_images);
+test_motorbikes_images = retrieve_images(path_to_motorbikes_test, amount_test_images);
+
+[~, descriptors_airplane_test] = get_keypoints(test_airplane_images, method, sift_method);
+[~, descriptors_cars_test] = get_keypoints(test_cars_images, method, sift_method);
+[~, descriptors_faces_test] = get_keypoints(test_faces_images, method, sift_method);
+[~, descriptors_motorbikes_test] = get_keypoints(test_motorbikes_images, method, sift_method);
+
+airplane_labels_test = assign_labels(kmeans_clusters, descriptors_airplane_test);
+cars_labels_test = assign_labels(kmeans_clusters, descriptors_cars_test);
+faces_labels_test = assign_labels(kmeans_clusters, descriptors_faces_test);
+motorbike_labels_test = assign_labels(kmeans_clusters, descriptors_motorbikes_test);
+
+[data_airplane_test, class_labels_airplane_test] = construct_data(airplane_labels_test, [cars_labels_test; faces_labels_test; motorbike_labels_test], nr_clusters);
+[data_cars_test, class_labels_cars_test] = construct_data(cars_labels_test, [airplane_labels_test; faces_labels_test; motorbike_labels_test], nr_clusters);
+[data_faces_test, class_labels_faces_test] = construct_data(faces_labels_test, [airplane_labels_test; cars_labels_test; motorbike_labels_test], nr_clusters);
+[data_motorbikes_test, class_labels_motorbikes_test] = construct_data(motorbike_labels_test, [airplane_labels_test; faces_labels_test; cars_labels_test], nr_clusters);
+
 models = {SVMModel_airplane, SVMModel_cars, SVMModel_faces, SVMModel_motorbikes};
 
-positive_labels = ones(amount_test_images, 1);
-negative_labels = zeros(amount_test_images, 1);
-[airplane_classes, labels1] = predict_SVM(models, path_to_airplane_test, amount_test_images, nr_clusters, kmeans_clusters, method, sift_method, positive_labels, negative_labels);
-[cars_classes, ~] = predict_SVM(models, path_to_cars_test, amount_test_images, nr_clusters, kmeans_clusters, method, sift_method, positive_labels, negative_labels);
-[faces_classes, ~] = predict_SVM(models, path_to_faces_test, amount_test_images, nr_clusters, kmeans_clusters, method, sift_method, positive_labels, negative_labels);
-[motorbikes_classes, ~] = predict_SVM(models, path_to_motorbikes_test, amount_test_images, nr_clusters, kmeans_clusters, method, sift_method, positive_labels, negative_labels);
+%%
+[labels_ranking_airplane] = predict_SVM(models{1}, data_airplane_test, class_labels_airplane_test);
+[labels_ranking_cars] = predict_SVM(models{2}, data_cars_test, class_labels_cars_test);
+[labels_ranking_faces] = predict_SVM(models{3}, data_faces_test, class_labels_faces_test);
+[labels_ranking_motorbikes] = predict_SVM(models{4}, data_motorbikes_test, class_labels_motorbikes_test);
 
-clc 
-
-airplane_classes(airplane_classes ~= 1) = 0;
-AP_airplane = calculate_AP(airplane_classes);
-% 
-cars_classes(cars_classes ~= 2) = 0;
-cars_classes(cars_classes == 2) = 1;
-AP_cars = calculate_AP(cars_classes);
-% 
-faces_classes(faces_classes ~= 3) = 0;
-faces_classes(faces_classes == 3) = 1;
-AP_faces = calculate_AP(faces_classes);
-% 
-motorbikes_classes(motorbikes_classes ~= 4) = 0;
-motorbikes_classes(motorbikes_classes == 4) = 1;
-AP_motorbikes = calculate_AP(motorbikes_classes);
+%%
+AP_airplane = calculate_AP(labels_ranking_airplane);
+AP_cars = calculate_AP(labels_ranking_cars);
+AP_faces = calculate_AP(labels_ranking_faces);
+AP_motorbikes = calculate_AP(labels_ranking_motorbikes);
 
 MAP = (AP_airplane + AP_cars + AP_faces + AP_motorbikes) / 4
 
