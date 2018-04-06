@@ -1,4 +1,6 @@
 function [labels] = assign_labels(clusters, descriptor_cell)
+    % Assign labels to the descriptor values, by chosing the closest
+    % cluster mean given by the kmean algorithm.
     labels = cell(size(descriptor_cell));
     for i = 1:size(descriptor_cell, 1)
         d = descriptor_cell{i};

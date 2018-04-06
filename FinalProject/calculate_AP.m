@@ -1,4 +1,5 @@
 function [ AP ] = calculate_AP(ranking)
+    % Calculates the Average precision of a given ranking.
     correctly_predicted = 0;
     precision_sum = 0;
     for i = 1:size(ranking, 1)

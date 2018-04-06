@@ -1,4 +1,5 @@
 function [ classes ] = classify_images(airplane_scores, cars_scores, faces_scores, motorbikes_scores)
+    % Classify the images based on the confidence score of the classifiers.
     classes = [];
     for i = 1:size(airplane_scores, 1)
         [~, class] = max([airplane_scores(i), cars_scores(i), faces_scores(i), motorbikes_scores(i)]);

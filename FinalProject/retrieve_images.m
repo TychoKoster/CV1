@@ -1,4 +1,5 @@
 function [images, image_paths] = retrieve_images(path_to_dir, length_of_images)
+% Retrieves the images from the given directory with the given amount
 image_paths = {};
 if nargin == 1
     image_files = dir(path_to_dir);

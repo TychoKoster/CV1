@@ -74,6 +74,7 @@ net.layers{end+1} = struct('type', 'relu') ;
 % Block 5
 
 NEW_INPUT_SIZE  = 64;
+% Change output size to 4
 NEW_OUTPUT_SIZE = 4;
 
 net.layers{end+1} = struct('type', 'conv', ...

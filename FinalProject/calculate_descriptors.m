@@ -1,4 +1,5 @@
 function [descriptor] = calculate_descriptors(I, f, channel)
+% Retrieve the descriptors from an image
 I_ = vl_imsmooth(im2double(I(:,:,channel)), sqrt(f(3)^2 - 0.5^2));
 [Ix, Iy] = vl_grad(I_);
 mod = sqrt(Ix.^2 + Iy.^2);

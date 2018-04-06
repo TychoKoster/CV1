@@ -86,6 +86,7 @@ splits = {'train', 'test'};
 
 %%
 % subtract mean
+% Retrieve the images from the Caltech directory
 path_to_airplane = '../Caltech4/ImageData/airplanes_train/*.jpg';
 path_to_cars = '../Caltech4/ImageData/cars_train/*.jpg';
 path_to_faces = '../Caltech4/ImageData/faces_train/*.jpg';
@@ -102,6 +103,7 @@ test_airplane_images = retrieve_images(path_to_airplane_test);
 test_cars_images = retrieve_images(path_to_cars_test);
 test_faces_images = retrieve_images(path_to_faces_test);
 test_motorbikes_images = retrieve_images(path_to_motorbikes_test);
+% Create the imdb structure 
 imdb = struct;
 imdb.images.data = [];
 imdb.images.labels = [];
@@ -116,6 +118,7 @@ imdb = addData(imdb, 3, test_faces_images, 2);
 imdb = addData(imdb, 4, test_motorbikes_images, 2);
 imdb.images.data = single(imdb.images.data);
 dataMean = mean(imdb.images.data(:, :, :, imdb.images.set == 1), 4);
+% Subtract the mean
 imdb.images.data = bsxfun(@minus, imdb.images.data, dataMean);
 imdb.images.labels = single(imdb.images.labels);
 imdb.meta.sets = {'train', 'val'} ;
